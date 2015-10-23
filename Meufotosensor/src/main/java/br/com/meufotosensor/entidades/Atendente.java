@@ -16,23 +16,12 @@ public class Atendente extends Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "ds_matricula")
-	private String matricula;
-	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "ds_tipoocorrencia")
 	private TipoOcorrencia tipoOcorrencia;
 	
 	@Column(name = "ds_ramal")
 	private String ramal;
-
-	public String getMatricula() {
-		return matricula;
-	}
-
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
-	}
 
 	public TipoOcorrencia getTipoOcorrencia() {
 		return tipoOcorrencia;

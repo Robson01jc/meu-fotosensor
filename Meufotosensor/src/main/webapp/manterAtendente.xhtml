@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/templates/template.xhtml">
+
+
+	<f:metadata>
+		<f:viewAction action="#{atendenteMB.getTodosAtendentes}" />
+	</f:metadata>
+
+	<ui:define name="titulo">
+		<h2>Meu Fotosensor - Manter Atendente</h2>
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form styleClass="form-horizontal" id="formCadastro">
+
+			<h:panelGroup rendered="#{atendenteMB.mostrarCadastro}">
+				<fieldset>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="nomeAtendente">Nome</label>
+						<div class="col-md-4">
+							<h:inputText value="#{atendenteMB.atendente.nome}"
+								class="form-control input-md" required="true"
+								requiredMessage="O campo &#34;Nome&#34; é de preenchimento obrigatório."
+								type="text" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="usuarioAtendente">Nome
+							de Usuário</label>
+						<div class="col-md-4">
+							<h:inputText value="#{atendenteMB.atendente.login}"
+								class="form-control input-md" required="true"
+								requiredMessage="O campo &#34;Nome de Usuario&#34; é de preenchimento obrigatório."
+								type="text" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="cpfAtendente">CPF</label>
+						<div class="col-md-4">
+							<h:inputText value="#{atendenteMB.atendente.cpf}"
+								class="form-control input-md" required="true"
+								requiredMessage="O campo &#34;CPF&#34; é de preenchimento obrigatório."
+								type="text" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="setorAtendente">Setor</label>
+						<div class="col-md-4">
+							<h:selectOneMenu value="${atendenteMB.atendente.tipoOcorrencia}"
+								styleClass="form-control">
+								<f:selectItem itemLabel="Infracao" itemValue="INFRACAO" />
+								<f:selectItem itemLabel="Acidente" itemValue="ACIDENTE" />
+							</h:selectOneMenu>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="ramalAtendente">Ramal</label>
+						<div class="col-md-4">
+							<h:inputText class="form-control input-md" required="true"
+								requiredMessage="O campo &#34;Ramal&#34; é de preenchimento obrigatório."
+								type="text" value="#{atendenteMB.atendente.ramal}" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="cadAtendente"></label>
+						<div class="col-md-4">
+							<h:commandButton value="Cadastrar" styleClass="btn btn-success"
+								action="#{atendenteMB.editarAtendente}" />
+						</div>
+					</div>
+
+				</fieldset>
+			</h:panelGroup>
+
+			<h:dataTable value="#{atendenteMB.atendentes}" var="atendente"
+				border="1" styleClass="table table-hover">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Nome" />
+					</f:facet>
+					<h:outputText value="#{atendente.nome}" />
+
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Login" />
+					</f:facet>
+					<h:outputText value="#{atendente.login}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="CPF" />
+					</f:facet>
+					<h:outputText value="#{atendente.cpf}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Ramal" />
+					</f:facet>
+					<h:outputText value="#{atendente.ramal}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Setor" />
+					</f:facet>
+					<h:outputText value="#{atendente.tipoOcorrencia}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Matricula" />
+					</f:facet>
+					<h:outputText value="#{atendente.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Ações" />
+					</f:facet>
+
+					<h:commandLink styleClass="btn btn-info"
+						action="#{atendenteMB.mostraOcultaCadastro()}">
+						<f:setPropertyActionListener value="#{atendente}"
+							target="#{atendenteMB.atendente}" />
+						<i class="fa fa-pencil"></i>
+					</h:commandLink>
+					
+				&#160;
+				<h:commandLink onclick="$('#ModalAtendente').modal('show')"
+						styleClass="btn btn-danger">
+						<i class="fa fa-trash-o"></i>
+						<f:ajax execute="@this"
+							listener="#{atendenteMB.preparaExcluir(atendente)}" />
+					</h:commandLink>
+
+				</h:column>
+			</h:dataTable>
+			<h:messages class="alert alert-info" />
+
+			<div class="col-md-offset-11">
+				<a href="#{request.contextPath}/cadastrarAtendente.xhtml"
+					class="btn btn-primary">Novo</a>
+			</div>
+
+			<!-- MODAL: EXCLUIR ATENDENTE -->
+			<div class="modal fade" id="ModalAtendente" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">x</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">Deseja excluir o
+								atendente selecionado?</h4>
+						</div>
+
+						<div class="modal-footer">
+							<a href="#" class="btn btn-primary" data-dismiss="modal">Não</a>
+							<h:commandLink styleClass="btn btn-primary" value="Sim"
+								action="#{atendenteMB.excluirAtendente}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- MODAL: EXCLUIR ATENDENTE -->
+
+		</h:form>
+	</ui:define>
+</ui:composition>

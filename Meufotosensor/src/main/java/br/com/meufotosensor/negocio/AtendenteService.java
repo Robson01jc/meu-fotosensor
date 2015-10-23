@@ -1,6 +1,7 @@
 package br.com.meufotosensor.negocio;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -18,5 +19,20 @@ public class AtendenteService implements Serializable {
 	@Transactional
 	public void salvarAtendente(Atendente atendente) {
 		atendenteDAO.adicionar(atendente);
+	}
+	
+	@Transactional
+	public List<Atendente> getTodosAtendentes() {
+		return atendenteDAO.getTodosAtendentes();
+	}
+	
+	@Transactional
+	public Atendente getAtendenteById(Long id) {
+		return atendenteDAO.getAtendenteById(id);
+	}
+	
+	@Transactional
+	public void removerAtendente(Atendente atendente) {
+		atendenteDAO.removerAtendente(atendente);
 	}
 }
