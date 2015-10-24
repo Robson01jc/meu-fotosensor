@@ -9,14 +9,19 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Meu Fotosensor</title>
 
-	<script
+	<script type="text/javascript"
+		src="${request.contextPath}/resources/js/main.js"></script>
+
+	<script type="text/javascript"
 		src="${request.contextPath}/resources/css/bootstrap/assets/js/jquery-1.10.2.js"></script>
-	<script
+	<script type="text/javascript"
 		src="${request.contextPath}/resources/css/bootstrap/assets/js/bootstrap.min.js"></script>
-	<script
+	<script type="text/javascript"
 		src="${request.contextPath}/resources/css/bootstrap/assets/js/jquery.metisMenu.js"></script>
-	<script
-		src="${request.contextPath}/resources/css/bootstrap/assets/js/custom.js"></script>
+	<!-- <script type="text/javascript"
+		src="${request.contextPath}/resources/css/bootstrap/assets/js/custom.js"></script> -->
+	<script type="text/javascript"
+		src="${request.contextPath}/resources/js/jquery.mask.js"></script>
 
 	<link
 		href="${request.contextPath}/resources/css/bootstrap/assets/css/bootstrap.css"
@@ -34,6 +39,13 @@
 </h:head>
 
 <h:body>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".mascaraCPF").inputmask("999.999.999-99");
+			$(".mascaraTelefone").inputmask("(99)99999-9999");
+		});
+	</script>
 
 	<div id="wrapper">
 		<nav class="navbar navbar-default navbar-cls-top " role="navigation"

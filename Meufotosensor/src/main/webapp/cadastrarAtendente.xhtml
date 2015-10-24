@@ -17,14 +17,15 @@
 
 		<h:form styleClass="form-horizontal">
 			<fieldset>
-
 				<legend></legend>
 				<div class="form-group">
 					<label class="col-md-4 control-label" for="nomeAtendente">Nome</label>
 					<div class="col-md-4">
 						<h:inputText value="#{atendenteMB.atendente.nome}"
-							placeholder="Nome completo" class="form-control input-md"
-							required="" type="text" />
+							onkeypress="return somenteLetra(event);"
+							class="form-control input-md" required="true"
+							requiredMessage="O campo &#34;Nome&#34; é de preenchimento obrigatório."
+							type="text" />
 					</div>
 				</div>
 
@@ -33,8 +34,10 @@
 						de Usuário</label>
 					<div class="col-md-4">
 						<h:inputText value="#{atendenteMB.atendente.login}"
-							placeholder="Nome completo" class="form-control input-md"
-							required="" type="text" />
+							class="form-control input-md" required="true"
+							onkeypress="return semEspaco(event);"
+							requiredMessage="O campo &#34;Nome de Usuario&#34; é de preenchimento obrigatório."
+							type="text" />
 					</div>
 				</div>
 
@@ -42,8 +45,11 @@
 					<label class="col-md-4 control-label" for="cpfAtendente">CPF</label>
 					<div class="col-md-4">
 						<h:inputText value="#{atendenteMB.atendente.cpf}"
-							placeholder="Nome completo" class="form-control input-md"
-							required="" type="text" />
+							onkeypress="return somenteNumero(event);"
+							styleClass="mascaraCPF form-control input-md" required="true"
+							requiredMessage="O campo &#34;CPF&#34; é de preenchimento obrigatório."
+							type="text">
+						</h:inputText>
 					</div>
 				</div>
 
@@ -61,8 +67,10 @@
 				<div class="form-group">
 					<label class="col-md-4 control-label" for="ramalAtendente">Ramal</label>
 					<div class="col-md-4">
-						<h:inputText placeholder="" class="form-control input-md"
-							required="" type="text" value="#{atendenteMB.atendente.ramal}" />
+						<h:inputText styleClass="mascaraTelefone form-control input-md"
+							required="true" onkeypress="return somenteNumero(event);"
+							requiredMessage="O campo &#34;Ramal&#34; é de preenchimento obrigatório."
+							type="text" value="#{atendenteMB.atendente.ramal}" />
 					</div>
 				</div>
 
@@ -71,7 +79,8 @@
 						a senha</label>
 					<div class="col-md-4">
 						<h:inputSecret value="#{atendenteMB.atendente.senha}"
-							placeholder="Senha" class="form-control input-md" required="true" />
+							class="form-control input-md" required="true"
+							requiredMessage="O campo &#34;Senha&#34; é de preenchimento obrigatório." />
 						<span class="help-block">Utilize a senha padrão:
 							FotoSensor@123</span>
 					</div>
@@ -88,7 +97,8 @@
 			</fieldset>
 		</h:form>
 
-		<h:messages styleClass="alert alert-success" />
+		<h:messages styleClass="alert alert-success"
+			style="list-style-type:none" />
 
 	</ui:define>
 </ui:composition>

@@ -90,7 +90,7 @@ public class AtendenteMB implements Serializable {
 				mensagem.setSeverity(FacesMessage.SEVERITY_ERROR);
 				context.addMessage(null, mensagem);
 			}
-		
+		this.atendente = new Atendente();
 	}
 	
 	public void mostraOcultaCadastro() {
