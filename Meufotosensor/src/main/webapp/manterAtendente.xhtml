@@ -13,21 +13,22 @@
 	</f:metadata>
 
 	<ui:define name="titulo">
-		<h2>Meu Fotosensor - Manter Atendente</h2>
+		<h2>Manter Atendente</h2>
 	</ui:define>
 
 	<ui:define name="conteudo">
 		<h:form styleClass="form-horizontal" id="formCadastro">
 
-			<h:panelGroup rendered="#{atendenteMB.mostrarCadastro}">
+			<h:panelGroup id="panelCadastro"
+				rendered="#{atendenteMB.mostrarCadastro}">
 				<fieldset>
 					<div class="form-group">
 						<label class="col-md-4 control-label" for="nomeAtendente">Nome</label>
 						<div class="col-md-4">
-							<h:inputText value="#{atendenteMB.atendente.nome}" id="idNomeAtendente"
-								onkeypress="return somenteLetra(event);"
-								onmouseover="return tiraEspaco();"
-								class="form-control input-md" required="true"
+							<h:inputText value="#{atendenteMB.atendente.nome}"
+								id="idNomeAtendente" onkeypress="return somenteLetra(event);"
+								onmouseover="return tiraEspaco();" class="form-control input-md"
+								required="true"
 								requiredMessage="O campo &#34;Nome&#34; é de preenchimento obrigatório."
 								type="text" />
 						</div>
@@ -84,9 +85,9 @@
 								action="#{atendenteMB.editarAtendente}" />
 							<!-- </div>
 						<div class="col-md-4"> -->
-							<h:commandButton value="Cancelar" styleClass="btn btn-danger">
-								<f:setPropertyActionListener value="#{false}"
-									target="#{atendenteMB.mostrarCadastro}" />
+							<h:commandButton value="Cancelar" styleClass="btn btn-danger"
+								actionListener="#{atendenteMB.mostraOcultaCadastro}">
+								<f:ajax render="@form :panelCadastro" />
 							</h:commandButton>
 						</div>
 					</div>
@@ -96,68 +97,71 @@
 
 			<ui:param name="atendentes" value="#{atendenteMB.atendentes}" />
 
-			<h:dataTable value="#{atendentes}" var="atendente" border="1"
-				styleClass="table table-hover"
-				rendered="#{fn:length(atendentes) gt 0}">
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Nome" />
-					</f:facet>
-					<h:outputText value="#{atendente.nome}" />
+			<h:panelGroup rendered="#{not atendenteMB.mostrarCadastro}">
+				<h:dataTable value="#{atendentes}" var="atendente" border="1"
+					styleClass="table table-hover"
+					rendered="#{fn:length(atendentes) gt 0}">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Nome" />
+						</f:facet>
+						<h:outputText value="#{atendente.nome}" />
 
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Login" />
-					</f:facet>
-					<h:outputText value="#{atendente.login}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="CPF" />
-					</f:facet>
-					<h:outputText value="#{atendente.cpf}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Ramal" />
-					</f:facet>
-					<h:outputText value="#{atendente.ramal}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Setor" />
-					</f:facet>
-					<h:outputText value="#{atendente.tipoOcorrencia}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Matricula" />
-					</f:facet>
-					<h:outputText value="#{atendente.id}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Ações" />
-					</f:facet>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Login" />
+						</f:facet>
+						<h:outputText value="#{atendente.login}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="CPF" />
+						</f:facet>
+						<h:outputText value="#{atendente.cpf}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Ramal" />
+						</f:facet>
+						<h:outputText value="#{atendente.ramal}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Setor" />
+						</f:facet>
+						<h:outputText value="#{atendente.tipoOcorrencia}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Matricula" />
+						</f:facet>
+						<h:outputText value="#{atendente.id}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Ações" />
+						</f:facet>
 
-					<h:commandLink styleClass="btn btn-info"
-						action="#{atendenteMB.mostraOcultaCadastro()}">
-						<f:setPropertyActionListener value="#{atendente}"
-							target="#{atendenteMB.atendente}" />
-						<i class="fa fa-pencil"></i>
-					</h:commandLink>
+						<h:commandLink styleClass="btn btn-info"
+							action="#{atendenteMB.mostraOcultaCadastro()}">
+							<f:setPropertyActionListener value="#{atendente}"
+								target="#{atendenteMB.atendente}" />
+							<f:ajax render="@form :panelCadastro" />
+							<i class="fa fa-pencil"></i>
+						</h:commandLink>
 					
 				&#160;
 				<h:commandLink onclick="$('#ModalAtendente').modal('show')"
-						styleClass="btn btn-danger">
-						<i class="fa fa-trash-o"></i>
-						<f:ajax execute="@this"
-							listener="#{atendenteMB.preparaExcluir(atendente)}" />
-					</h:commandLink>
+							styleClass="btn btn-danger">
+							<i class="fa fa-trash-o"></i>
+							<f:ajax execute="@this"
+								listener="#{atendenteMB.preparaExcluir(atendente)}" />
+						</h:commandLink>
 
-				</h:column>
-			</h:dataTable>
+					</h:column>
+				</h:dataTable>
+			</h:panelGroup>
 
 			<h:panelGroup rendered="#{fn:length(atendentes) eq 0}">
 				<div class="col-md-offset-3">
@@ -168,8 +172,13 @@
 			<h:messages class="alert alert-info" style="list-style-type:none" />
 
 			<div class="col-md-offset-11">
-				<a href="#{request.contextPath}/cadastrarAtendente.xhtml"
-					class="btn btn-primary">Novo</a>
+				<h:commandLink styleClass="btn btn-primary"
+					actionListener="#{atendenteMB.mostraOcultaCadastro}"
+					rendered="#{not atendenteMB.mostrarCadastro}">
+					Novo
+				<f:ajax execute="@this" listener="#{atendenteMB.prepararCadastro}"
+						render="@form :panelCadastro" />
+				</h:commandLink>
 			</div>
 
 			<!-- MODAL: EXCLUIR ATENDENTE -->

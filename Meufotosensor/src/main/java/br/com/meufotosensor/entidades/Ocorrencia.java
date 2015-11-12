@@ -3,7 +3,6 @@ package br.com.meufotosensor.entidades;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_ocorrencia")
@@ -48,7 +48,10 @@ public class Ocorrencia implements Serializable {
 	
 	@Column(name = "ds_caminhoimagem")
 	private String caminhoImagem;
-
+	
+	@Transient
+	private String arquivoImagem;
+	
 	public Long getId() {
 		return id;
 	}
@@ -103,6 +106,14 @@ public class Ocorrencia implements Serializable {
 
 	public void setCaminhoImagem(String caminhoImagem) {
 		this.caminhoImagem = caminhoImagem;
+	}
+
+	public String getArquivoImagem() {
+		return arquivoImagem;
+	}
+
+	public void setArquivoImagem(String arquivoImagem) {
+		this.arquivoImagem = arquivoImagem;
 	}
 
 	@Override
