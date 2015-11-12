@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core" lang="pt-br"
+	template="/templates/template.xhtml">
+
+<f:metadata>
+	<f:viewAction action="#{ocorrenciaMB.prepararCadastro}" />
+</f:metadata>
+
+<ui:define name="titulo">
+		<h2>Meu Fotosensor - Postar Ocorrência</h2>
+	</ui:define>
+<ui:define name="conteudo">
+
+	<h:form id="form" enctype="multipart/form-data">
+				<!-- INICIO - PAINEL DE POSTAGEM -->
+				<div class="row">
+					<div class="col-md-12">
+						<!-- Form Elements -->
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Formulário de Postagem
+							</div>							
+							<div class="panel-body">
+								<div class="row">																		
+									<form role="form" id="idFormPostagem">
+										<div class="col-md-6">	
+											<div class="well">
+											<div class="col-md-offset-4">												
+												<i class="fa fa-camera fa-5x"></i> <br />
+												<label>Carregue a Foto</label>
+												</div>
+												<h:inputFile value="#{ocorrenciaMB.ocorrencia.arquivoImagem}" />
+											</div>
+										</div>
+										
+										<div class="col-md-6">
+										
+											<div class="form-group">
+												<label>Local</label>
+												<h:inputText styleClass="form-control" value="#{ocorrenciaMB.ocorrencia.local}" />                                            
+											</div>
+											
+											<div class="form-group">
+                                                <label for="disabledSelect">Bairro</label>
+                                                <h:selectOneMenu styleClass="form-control" value="#{ocorrenciaMB.ocorrencia.bairro}" required="true" requiredMessage="O campo &#34;Bairro&#34; é de preenchimento obrigatório.">
+                                                	<f:selectItem itemValue="" itemLabel="Selecione" />
+                                                	<f:selectItems value="#{ocorrenciaMB.getBairros()}" var="bairro" itemLabel="#{bairro.descricao}" itemValue="#{bairro.id}" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                            
+											<div class="form-group">
+												<label>Observação</label>
+												<h:inputTextarea styleClass="form-control" value="#{ocorrenciaMB.ocorrencia.descricao}" />
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-md-12 col-md-offset-6">
+											<div class="form-group col-md-8" id="idBoxBotoes">
+												<button type="submit" class="btn btn-success" jsf:action="#{ocorrenciaMB.salvarOcorrencia}"><i class="fa fa-check"></i>Enviar</button>
+												
+												<a href="index.html" class="btn btn-danger" role="button"> <i class="fa fa-times"></i> Cancelar</a>
+											</div>
+											</div>
+										</div>										
+									</form>
+								</div>									
+							</div>
+						</div>
+					</div>
+				</div>
+					
+					               
+				<!-- INICIO - PAINEL DE POSTAGEM -->
+				
+	
+	
+	
+
+</h:form>
+</ui:define>
+</ui:composition>

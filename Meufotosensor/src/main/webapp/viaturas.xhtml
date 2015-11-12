@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	template="/templates/template.xhtml">
+
+
+	<f:metadata>
+		<f:viewAction action="#{atendenteMB.getTodosAtendentes}" />
+	</f:metadata>
+
+	<ui:define name="titulo">
+		<h2>Feed de Ocorrências</h2>
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form styleClass="form-horizontal" id="formCadastro">
+
+			<h:panelGroup id="panelCadastro"
+				rendered="#{atendenteMB.mostrarCadastro}">
+				<fieldset>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="nomeAtendente">Nome</label>
+						<div class="col-md-4">
+							<h:inputText value="#{atendenteMB.atendente.nome}"
+								id="idNomeAtendente" onkeypress="return somenteLetra(event);"
+								onmouseover="return tiraEspaco();" class="form-control input-md"
+								required="true"
+								requiredMessage="O campo &#34;Nome&#34; é de preenchimento obrigatório."
+								type="text" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="usuarioAtendente">Nome
+							de Usuário</label>
+						<div class="col-md-4">
+							<h:inputText value="#{atendenteMB.atendente.login}"
+								class="form-control input-md" required="true"
+								onkeypress="return semEspaco(event);"
+								requiredMessage="O campo &#34;Nome de Usuario&#34; é de preenchimento obrigatório."
+								type="text" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="cpfAtendente">CPF</label>
+						<div class="col-md-4">
+							<h:inputText value="#{atendenteMB.atendente.cpf}"
+								onkeypress="return somenteNumero(event);"
+								styleClass="mascaraCPF form-control input-md" required="true"
+								requiredMessage="O campo &#34;CPF&#34; é de preenchimento obrigatório."
+								type="text">
+							</h:inputText>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="setorAtendente">Setor</label>
+						<div class="col-md-4">
+							<h:selectOneMenu value="${atendenteMB.atendente.tipoOcorrencia}"
+								styleClass="form-control">
+								<f:selectItem itemLabel="Infracao" itemValue="INFRACAO" />
+								<f:selectItem itemLabel="Acidente" itemValue="ACIDENTE" />
+							</h:selectOneMenu>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="ramalAtendente">Ramal</label>
+						<div class="col-md-4">
+							<h:inputText styleClass="mascaraTelefone form-control input-md"
+								required="true" onkeypress="return somenteNumero(event);"
+								requiredMessage="O campo &#34;Ramal&#34; é de preenchimento obrigatório."
+								type="text" value="#{atendenteMB.atendente.ramal}" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-md-4 col-md-offset-4">
+							<h:commandButton value="Salvar" styleClass="btn btn-success"
+								action="#{atendenteMB.editarAtendente}" />
+							<!-- </div>
+						<div class="col-md-4"> -->
+							<h:commandButton value="Cancelar" styleClass="btn btn-danger"
+								actionListener="#{atendenteMB.mostraOcultaCadastro}">
+								<f:ajax render="@form :panelCadastro" />
+							</h:commandButton>
+						</div>
+					</div>
+
+				</fieldset>
+			</h:panelGroup>
+
+			<ui:param name="atendentes" value="#{atendenteMB.atendentes}" />
+
+			<h:panelGroup rendered="#{not atendenteMB.mostrarCadastro}">
+				<h:dataTable value="#{atendentes}" var="atendente" border="1"
+					styleClass="table table-hover"
+					rendered="#{fn:length(atendentes) gt 0}">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Nome" />
+						</f:facet>
+						<h:outputText value="#{atendente.nome}" />
+
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Login" />
+						</f:facet>
+						<h:outputText value="#{atendente.login}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="CPF" />
+						</f:facet>
+						<h:outputText value="#{atendente.cpf}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Ramal" />
+						</f:facet>
+						<h:outputText value="#{atendente.ramal}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Setor" />
+						</f:facet>
+						<h:outputText value="#{atendente.tipoOcorrencia}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Matricula" />
+						</f:facet>
+						<h:outputText value="#{atendente.id}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Ações" />
+						</f:facet>
+					
+				&#160;
+				<h:commandLink onclick="$('#ModalAtendente').modal('show')"
+							styleClass="btn btn-primary" value="Encaminhar">
+							<f:ajax execute="@this"
+								listener="#{atendenteMB.preparaExcluir(atendente)}" />
+						</h:commandLink>
+
+					</h:column>
+				</h:dataTable>
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{fn:length(atendentes) eq 0}">
+				<div class="col-md-offset-3">
+					<h1>Nenhum atendente cadastrado.</h1>
+				</div>
+			</h:panelGroup>
+
+			<h:messages class="alert alert-info" style="list-style-type:none" />
+
+			<div class="col-md-offset-11">
+				<h:commandLink styleClass="btn btn-primary"
+					actionListener="#{atendenteMB.mostraOcultaCadastro}"
+					rendered="#{not atendenteMB.mostrarCadastro}">
+					Novo
+				<f:ajax execute="@this" listener="#{atendenteMB.prepararCadastro}"
+						render="@form :panelCadastro" />
+				</h:commandLink>
+			</div>
+
+			<!-- MODAL: EXCLUIR ATENDENTE -->
+			<div class="modal fade" id="ModalAtendente" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">x</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">Escolha a viatura mais próxima:</h4>
+						</div>
+						
+						<div class="modal-body">
+							<div class="col-md-12">											
+											<div class="input-group">
+											    <span class="input-group-addon">
+												    <i class="fa fa-taxi fa-2x" style="background:transparent;border:none"></i>
+												</span>
+												<input type="text" class="form-control" style="height: 42px;" 
+													placeholder="Rua 01, nº 123 - Bairro, Cidade - Estado  /  12:00h" />
+												<div class="input-group-btn">
+												<input type="button" class="btn btn-primary" style="height: 42px;" value="Selecionar" />
+											</div>
+											</div>
+
+											<div class="input-group">
+											    <span class="input-group-addon">
+												    <i class="fa fa-taxi fa-2x" style="background:transparent;border:none"></i>
+												</span>
+												<input type="text" class="form-control" style="height: 42px;" 
+													placeholder="Rua 01, nº 123 - Bairro, Cidade - Estado  /  12:00h" />
+												<div class="input-group-btn">
+												<input type="button" class="btn btn-primary" style="height: 42px;" value="Selecionar" />
+											</div>
+											</div>																						      
+											<div class="input-group">
+											    <span class="input-group-addon">
+												    <i class="fa fa-taxi fa-2x" style="background:transparent;border:none"></i>
+												</span>
+												<input type="text" class="form-control" style="height: 42px;" 
+													placeholder="Rua 01, nº 123 - Bairro, Cidade - Estado  /  12:00h" />
+												<div class="input-group-btn">
+												<input type="button" class="btn btn-primary" style="height: 42px;" value="Selecionar" />
+											</div>
+											</div>	
+
+											<div class="input-group">
+											    <span class="input-group-addon">
+												    <i class="fa fa-taxi fa-2x" style="background:transparent;border:none"></i>
+												</span>
+												<input type="text" class="form-control" style="height: 42px;" 
+													placeholder="Rua 01, nº 123 - Bairro, Cidade - Estado  /  12:00h" />
+												<div class="input-group-btn">
+												<input type="button" class="btn btn-primary" style="height: 42px;" value="Selecionar" />
+											</div>
+											</div>	
+
+											<div class="input-group">
+											    <span class="input-group-addon">
+												    <i class="fa fa-taxi fa-2x" style="background:transparent;border:none"></i>
+												</span>
+												<input type="text" class="form-control" style="height: 42px;" 
+													placeholder="Rua 01, nº 123 - Bairro, Cidade - Estado  /  12:00h" />
+												<div class="input-group-btn">
+												<input type="button" class="btn btn-primary" style="height: 42px;" value="Selecionar" />
+											</div>
+											</div>
+
+											<div class="input-group">
+											    <span class="input-group-addon">
+												    <i class="fa fa-taxi fa-2x" style="background:transparent;border:none"></i>
+												</span>
+												<input type="text" class="form-control" style="height: 42px;" 
+													placeholder="Rua 01, nº 123 - Bairro, Cidade - Estado  /  12:00h" />
+												<div class="input-group-btn">
+												<input type="button" class="btn btn-primary" style="height: 42px;" value="Selecionar" />
+											</div>
+											</div>	
+
+											<div class="input-group">
+											    <span class="input-group-addon">
+												    <i class="fa fa-taxi fa-2x" style="background:transparent;border:none"></i>
+												</span>
+												<input type="text" class="form-control" style="height: 42px;" 
+													placeholder="Rua 01, nº 123 - Bairro, Cidade - Estado  /  12:00h" />
+												<div class="input-group-btn">
+												<input type="button" class="btn btn-primary" style="height: 42px;" value="Selecionar" />
+											</div>
+											</div>
+											
+											<div class="input-group">
+											    <span class="input-group-addon">
+												    <i class="fa fa-taxi fa-2x" style="background:transparent;border:none"></i>
+												</span>
+												<input type="text" class="form-control" style="height: 42px;" 
+													placeholder="Rua 01, nº 123 - Bairro, Cidade - Estado  /  12:00h" />
+												<div class="input-group-btn">
+												<input type="button" class="btn btn-primary" style="height: 42px;" value="Selecionar" />
+											</div>
+											</div>
+										</div>
+						</div>
+
+						<div class="modal-footer">
+							<!-- <a href="#" class="btn btn-primary" data-dismiss="modal">Não</a> -->
+							<div class="row">
+							<div class="col-md-7">
+							<h:commandLink styleClass="btn btn-success" value="Enviar" 
+								action="#{atendenteMB.excluirAtendente}" /> 
+							</div>	
+							</div>	
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- MODAL: EXCLUIR ATENDENTE -->
+
+		</h:form>
+	</ui:define>
+</ui:composition>
